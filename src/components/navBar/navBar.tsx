@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 type Props = {}
@@ -13,6 +14,11 @@ bg-gray-900
   justify-between
   "
 >
+
+  <div className='flex items-center gap-4'>
+  <Image src="/democryptologo.png" width={30} height={20} alt="logo" />
+  <div className='text-white text-sm font-bold'>Democrypto</div>
+  </div>
  
 </div>
   )
