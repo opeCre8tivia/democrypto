@@ -43,7 +43,7 @@ export const getCrypto = async()=>{
     const response = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=4&convert=USD",{
       method:"GET",
       headers:{
-        "X-CMC_PRO_API_KEY":"29650fc1-e50d-415a-99dd-c6c8c8e88633",
+        "X-CMC_PRO_API_KEY":`${process.env.MARKET_CAP_KEY}`,
         "Content-Type":"application/json"
       },
       next:{
