@@ -50,8 +50,6 @@ const Page = (props: Props) => {
     }
   }, [isError, isSuccess])
 
-  console.log("track---> ")
-
   const handleLogin = (data: { email: string; password: string }) => {
     dispatch(_loginAdmin(data));
   }

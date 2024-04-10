@@ -13,7 +13,6 @@ const MarketUpdateTable = (props: Props) => {
    useEffect(()=>{
      (async()=>{
      let {data} =  await getCrypto(8)
-     console.log(data,'--------> 4 crypto')
      data && setCurrencies(data)
      })()
    },[])
