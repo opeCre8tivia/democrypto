@@ -2,6 +2,7 @@ import { getCrypto } from '@/server/actions'
 import { Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
+import type { TableColumnsType } from 'antd';
 
 type Props = {}
 
@@ -18,7 +19,7 @@ const MarketUpdateTable = (props: Props) => {
    },[])
 
 
-   const columns = [
+   const columns:TableColumnsType<any> = [
     {
       title: 'Name',
       render:(rowData:any)=>{
