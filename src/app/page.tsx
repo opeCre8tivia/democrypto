@@ -16,6 +16,7 @@ import { clearAdminLoginState } from "@/redux/slices/adminAuth.slice"
 import NavBar from "@/components/navBar/navBar"
 import HeroSection from "@/components/HeroSection/HeroSection"
 import CurrencyHighlights from "@/components/CurrencyHighlights/CurrencyHighlights"
+import MarketUpdateTable from "@/components/MarketUpdateTable/MarketUpdateTable"
 // import {clearAdminLoginState} from "@/redux/slices/adminAuth.slice";/
 
 type Props = {}
@@ -93,6 +94,8 @@ const Page = (props: Props) => {
       Market Update
     </div>
 
+    {/* table */}
+     <MarketUpdateTable />
     </div>
     
       

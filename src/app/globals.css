@@ -25,3 +25,14 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+.ant-table-cell {
+  background-color: rgb(17, 24, 39) !important;
+  border-bottom: 1px solid #393939 !important;
+  color:#ffffff !important;
+}
+
+.ant-table-cell-row-hover {
+  background-color: rgb(31, 41, 55) !important;
+}
