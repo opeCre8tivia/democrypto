@@ -13,8 +13,7 @@ const CurrencyHighlights = (props: Props) => {
 
    useEffect(()=>{
      (async()=>{
-     let {data} =  await getCrypto()
-     console.log(data,'--------> 4 crypto')
+     let {data} =  await getCrypto(4)
      data && setCurrencies(data)
      })()
    },[])

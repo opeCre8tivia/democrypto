@@ -87,6 +87,14 @@ const Page = (props: Props) => {
 
 
     {/* market update */}
+    <div className="w-full h-auto bg-gray-900 px-[15px]">
+
+    <div className="my-8 text-white text-xl font-bold">
+      Market Update
+    </div>
+
+    </div>
+    
       
     </div>
   )

@@ -37,17 +37,17 @@ interface CreateBusinessCategoryType {
 }
 
 // fetch 4 most popular crypto currencies
-export const getCrypto = async()=>{
+export const getCrypto = async(limit:number)=>{
    try {
 
-    const response = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=4&convert=USD",{
+    const response = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=${limit}&convert=USD`,{
       method:"GET",
       headers:{
         "X-CMC_PRO_API_KEY":`${process.env.MARKET_CAP_KEY}`,
         "Content-Type":"application/json"
       },
       next:{
-        revalidate:5000
+        // revalidate:5000
       }
     })
   
