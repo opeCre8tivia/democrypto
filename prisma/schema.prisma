@@ -1,0 +1,384 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String
+  userId    String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+  Product   Product[]
+}
+
+model Country {
+  id        String     @id @default(uuid()) @db.Uuid
+  name      String
+  code      String
+  flag      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  Currency  Currency[]
+  User      User[]
+}
+
+model Currency {
+  id           String         @id @default(uuid()) @db.Uuid
+  countryId    String         @db.Uuid
+  name         String
+  code         String
+  symbol       String
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Country      Country        @relation(fields: [countryId], references: [id])
+  Denomination Denomination[]
+}
+
+model Denomination {
+  id         String           @id @default(uuid()) @db.Uuid
+  type       DenominationType
+  name       String
+  value      Float
+  currencyId String           @db.Uuid
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  Currency   Currency         @relation(fields: [currencyId], references: [id])
+}
+
+model Discount {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  name         String
+  value        Float
+  isPercentage Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  User         User     @relation(fields: [userId], references: [id])
+}
+
+model Employee {
+  id          String   @id @default(uuid()) @db.Uuid
+  firstName   String
+  lastName    String
+  phoneNumber String
+  email       String
+  userId      String   @db.Uuid
+  roleId      String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  password    String
+  Role        Role     @relation(fields: [roleId], references: [id])
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model Option {
+  id               String             @id @default(uuid()) @db.Uuid
+  name             String
+  setId            String             @db.Uuid
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  OptionSet        OptionSet          @relation(fields: [setId], references: [id])
+  ProductVariation ProductVariation[] @relation("OptionToProductVariation")
+}
+
+model OptionSet {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Option    Option[]
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  planId    String   @db.Uuid
+  Plan      Plan     @relation(fields: [planId], references: [id])
+}
+
+model Permission {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  code Int
+  Role Role[] @relation("PermissionToRole")
+}
+
+model Plan {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String
+  monthlyCharge Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Payment       Payment[]
+  Subscription  Subscription[]
+  Trial         Trial[]
+}
+
+model Product {
+  id                   String                 @id @default(uuid()) @db.Uuid
+  name                 String
+  userId               String                 @db.Uuid
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  categoryId           String                 @db.Uuid
+  description          String
+  sku                  String
+  Category             Category               @relation(fields: [categoryId], references: [id])
+  User                 User                   @relation(fields: [userId], references: [id])
+  ProductVariation     ProductVariation[]
+  Stock                Stock?
+  StockAdjustmentTrail StockAdjustmentTrail[]
+  UnitOfMeasure        UnitOfMeasure[]
+}
+
+model ProductVariation {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  productId String   @db.Uuid
+  price     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Option    Option[] @relation("OptionToProductVariation")
+}
+
+model Role {
+  id         String       @id @default(uuid()) @db.Uuid
+  name       String
+  userId     String       @db.Uuid
+  Employee   Employee[]
+  User       User         @relation(fields: [userId], references: [id])
+  Permission Permission[] @relation("PermissionToRole")
+}
+
+model Sale {
+  id            String     @id @default(uuid()) @db.Uuid
+  userId        String     @db.Uuid
+  paymentType   String
+  paymentTypeId String
+  customerName  String?
+  customerId    String?
+  status        SaleStatus
+  orderTotal    Int
+  amountDue     Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now())
+  soldById      String
+  soldByName    String
+  orderNumber   String?
+  SaleItem      SaleItem[]
+}
+
+model SaleItem {
+  id                 String   @id @default(uuid()) @db.Uuid
+  saleId             String   @db.Uuid
+  productId          String
+  productName        String
+  categoryId         String
+  categoryName       String
+  salesUnitId        String?
+  salesUnitName      String?
+  discountId         String?
+  discountName       String?
+  discountPercentage Int?
+  discountedAmount   Int?
+  productSalesPrice  Int
+  qtyOrdered         Int
+  totalSalesPrice    Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  Sale               Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+}
+
+model Stock {
+  id        String   @id @default(uuid()) @db.Uuid
+  qty       Int
+  productId String   @unique @db.Uuid
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model StockAdjustmentTrail {
+  id            String   @id @default(uuid()) @db.Uuid
+  reason        String
+  countedByName String
+  previousValue Int
+  value         Int
+  newValue      Int
+  productId     String   @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  Product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id        String   @id @default(uuid()) @db.Uuid
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  planId    String   @db.Uuid
+  userId    String   @db.Uuid
+  Plan      Plan     @relation(fields: [planId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Supplier {
+  id           String   @id @default(uuid()) @db.Uuid
+  supplierName String
+  contactName  String
+  phoneNumber  String
+  email        String
+  addressLine  String
+  userId       String   @db.Uuid
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  User         User     @relation(fields: [userId], references: [id])
+}
+
+model Trial {
+  id        String   @id @default(uuid()) @db.Uuid
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  planId    String   @db.Uuid
+  userId    String   @unique @db.Uuid
+  Plan      Plan     @relation(fields: [planId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Unit {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String
+  userId        String          @db.Uuid
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  User          User            @relation(fields: [userId], references: [id])
+  UnitOfMeasure UnitOfMeasure[]
+}
+
+model UnitOfMeasure {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String
+  salesPrice      Float
+  unitId          String   @db.Uuid
+  productId       String   @db.Uuid
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
+  grade           UoMGrade
+  isPurchasingUoM Boolean  @default(false)
+  isSalesUoM      Boolean  @default(false)
+  qtyOfChildUoM   Int      @default(0)
+  childUnitId     String?
+  costPrice       Float    @default(0.0)
+  Product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Unit            Unit     @relation(fields: [unitId], references: [id])
+}
+
+model User {
+  id                 String             @id @default(uuid()) @db.Uuid
+  firstName          String?
+  lastName           String?
+  phoneNumber        String?
+  email              String?
+  businessName       String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime
+  passcode           String?
+  password           String?
+  countryId          String?            @db.Uuid
+  businessCategoryId String?            @db.Uuid
+  isDisabled         Boolean            @default(false)
+  Category           Category[]
+  Discount           Discount[]
+  Employee           Employee[]
+  InventoryHistory   InventoryHistory[]
+  OptionSet          OptionSet[]
+  Product            Product[]
+  role               Role[]
+  stock              Stock[]
+  subscription       Subscription[]
+  supplier           Supplier[]
+  trial              Trial?
+  unit               Unit[]
+  businessCategory   BusinessCategory?  @relation(fields: [businessCategoryId], references: [id])
+  country            Country?           @relation(fields: [countryId], references: [id])
+}
+
+model BusinessCategory {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  iconUri    String
+  themeColor String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  User       User[]
+}
+
+model InventoryHistory {
+  id            String        @id @default(uuid()) @db.Uuid
+  userId        String        @db.Uuid
+  productId     String        @db.Uuid
+  reason        HistoryReason
+  adjustment    Int
+  snapShotStock Int
+  stockAfter    Int
+  operatorName  String
+  operatorId    String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+  User          User          @relation(fields: [userId], references: [id])
+}
+
+model ReceiptDownloads {
+  id        String   @id @db.Uuid
+  saleId    String
+  createdAt DateTime @default(now())
+}
+
+model Version {
+  id             String   @id @db.Uuid
+  currentVersion String
+  newVersion     String
+  downloadUri    String
+  createdAt      DateTime @default(now())
+}
+
+enum DenominationType {
+  paper
+  coin
+}
+
+enum SaleStatus {
+  PAID
+  OVERDUE
+  PARTIAL
+}
+
+enum UoMGrade {
+  BASE
+  UoM_ONE
+  UoM_TWO
+  UoM_THREE
+}
+
+enum HistoryReason {
+  sale
+  count
+  damage
+  loss
+  receive
+}
