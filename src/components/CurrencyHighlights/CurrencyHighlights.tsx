@@ -28,7 +28,7 @@ const CurrencyHighlights = (props: Props) => {
             let percentChange = c.quote.USD.percent_change_24h
 
             return  (
-              <div className='w-full md:min-w-[18%] md:max-w-[20%] h-[120px] bg-gray-700 rounded-sm mx-2 my-2 p-4'>
+              <div key={index} className='w-full md:min-w-[18%] md:max-w-[20%] h-[120px] bg-gray-700 rounded-sm mx-2 my-2 p-4'>
               <div className='w-full h-auto flex justify-start gap-4 items-center'>
                 {/* icon */}
                 <div className=' text-sm text-white font-medium'>

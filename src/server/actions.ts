@@ -47,7 +47,7 @@ export const getCrypto = async(limit:number)=>{
         "Content-Type":"application/json"
       },
       next:{
-        // revalidate:5000
+        revalidate:5000
       }
     })
   
