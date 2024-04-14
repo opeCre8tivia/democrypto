@@ -49,9 +49,9 @@ const AdminLayout = ({ children }: Props) => {
   // }, [logoutLoading])
 
   return (
-    <div className="w-[100vw] min-h-[100vh] relative bg-gray-50">
+    <div className="w-[100vw] min-h-[100vh] relative bg-gray-900">
       {/* top bar */}
-      <div className="w-[100vw] h-[10vh] fixed top-0 left-0 z-10 bg-white flex justify-between items-center pr-8 border-b-1 border-[#d9d9d9]">
+      <div className="w-[100vw] h-[10vh] fixed top-0 left-0 z-10 bg-gray-800 flex justify-between items-center pr-8 border-b-1 border-[#d9d9d9]">
         {/* humberger */}
         <div className="w-fit h-fit flex ">
           <div
@@ -87,18 +87,18 @@ const AdminLayout = ({ children }: Props) => {
 
         {/* logo */}
 
-        <div className="w-[50px] h-[50px] flex justify-center items-center text-white font-bold rounded-full bg-orange-500">
+        <div className="w-[50px] h-[50px] flex justify-center items-center text-white font-bold rounded-full bg-blue-500">
           A
         </div>
       </div>
 
-      <div className="flex relative">
+      <div className="flex relative bg-gray-900">
         {/* nav bar left */}
 
         <div
           className={`${
             toggleMenu ? "fixed flex" : "hidden"
-          } lg:fixed  top-[10vh] left-0  lg:flex flex-col  z-10 w-[200px] max-w-[200px] h-[90vh] bg-white transition-all translate-x-0.5 duration-1000 p-0 border-r-1 border-[#d9d9d9]`}
+          } lg:fixed  top-[10vh] left-0  lg:flex flex-col  z-10 w-[200px] max-w-[200px] h-[90vh] bg-gray-800 transition-all translate-x-0.5 duration-1000 p-0 `}
         >
           <MenuItem
             title="Dashboard"
@@ -106,56 +106,25 @@ const AdminLayout = ({ children }: Props) => {
             href="/admin/dashboard"
           />
           <MenuItem
-            title="Countries"
+            title="Wallet"
             Icon={AiOutlineTeam}
-            href="/admin/countries"
+            href="/admin/wallet"
           />
           <MenuItem
-            title="Currencies"
+            title="Trade"
             Icon={AiFillPieChart}
-            href="/admin/currencies"
+            href="#"
           />
 
           <MenuItem
-            title="Denominations"
+            title="Market"
             Icon={AiFillBoxPlot}
-            href="/admin/denominations"
-          />
-       
-          <MenuItem
-            title="Permissions"
-            Icon={AiFillProfile}
-            href="/admin/permissions"
-          />
-          <MenuItem
-            title="Business Categories"
-            Icon={AiFillProfile}
-            href="/admin/businesscategories"
-          />
-          <MenuItem
-            title="Businesses"
-            Icon={AiFillBuild}
-            href="/admin/businesses"
-          />
-
-          {/* <MenuItem title="Titles" Icon={AiFillTag} href="/admin/titles" /> */}
-
-          {/* <MenuItem title="Forms" Icon={AiFillFileAdd} href="/admin/forms" /> */}
-
-          {/* <MenuItem
-            title="Evaluations"
-            Icon={AiFillPieChart}
-            href="/admin/evaluation/company/list"
-          /> */}
-          <MenuItem
-            title="Analytics"
-            Icon={AiFillFile}
-            href="/admin/analytics"
+            href="#"
           />
         </div>
 
         {/* children */}
-        <div className="w-full lg:mt-[10vh] lg:ml-[16vw] p-4  flex flex-col justify-start min-h-[98vh] overflow-y-scroll bg-transparent mt-[10vh]">
+        <div className="w-full lg:mt-[10vh] lg:ml-[16vw] p-4  flex flex-col justify-start min-h-[98vh] overflow-y-scroll bg-transparent mt-[10vh] bg-gray-900">
           {children}
         </div>
       </div>

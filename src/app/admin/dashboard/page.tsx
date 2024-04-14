@@ -6,10 +6,7 @@ import { revalidatePath } from "next/cache"
 type Props = {}
 
 const Page = async(props: Props) => {
-  const businesses = await prisma.user.findMany()
-  const sales = await prisma.sale.findMany()
-  const products = await prisma.product.findMany()
-  const uoms = await prisma.unitOfMeasure.findMany()
+
 
   revalidatePath("/admin/dashboard")
 
@@ -21,7 +18,7 @@ const Page = async(props: Props) => {
                     Businesses
                  </div>
                  <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   {businesses && businesses.length}
+                   20
                  </div>
               </div>
             </Col>
@@ -31,7 +28,7 @@ const Page = async(props: Props) => {
                     Items
                  </div>
                  <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   {products && products.length}
+                   80
                  </div>
               </div>
             </Col>
@@ -41,7 +38,7 @@ const Page = async(props: Props) => {
                     Sales
                  </div>
                  <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   {sales && sales.length}
+                   105
                  </div>
               </div>
             </Col>
@@ -51,7 +48,7 @@ const Page = async(props: Props) => {
                     UoMs
                  </div>
                  <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   {uoms && uoms.length}
+                   5
                  </div>
               </div>
             </Col>
