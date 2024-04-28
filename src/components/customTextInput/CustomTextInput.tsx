@@ -36,7 +36,7 @@ const CustomTextInput = ({
       onChange={onChange}
       type={type}
       disabled={disabled}
-      className={`h-[48px] ${className}`}
+      className={`h-[48px bg-gray-900] ${className}`}
     />
   )
 }

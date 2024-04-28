@@ -1,29 +1,21 @@
 import { getCrypto } from '@/server/actions'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 type Props = {}
 
 
 
-const CurrencyHighlights = (props: Props) => {
+const CurrencyHighlights = async(props: Props) => {
 
-   const [currencies,setCurrencies] = useState<any[]>([])
-
-
-   useEffect(()=>{
-     (async()=>{
-     let {data} =  await getCrypto(4)
-     data && setCurrencies(data)
-     })()
-   },[])
+  let {data} =  await getCrypto(4)
   
   return (
     <div className='w-full min-h-[150px] flex justify-center items-start flex-wrap px-8 bg-gray-800'>
 
         {/* card */}
        {
-         currencies && currencies.map((c,index)=>{
+        data && data.map((c:any,index:any)=>{
             let change = c.quote.USD.volume_change_24h
             let percentChange = c.quote.USD.percent_change_24h
 

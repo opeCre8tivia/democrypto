@@ -1,10 +1,13 @@
 import React from 'react'
 import CustomButton from '../customButton/CustomButton'
 import Image from 'next/image'
+import Link from 'next/link'
+
 
 type Props = {}
 
 const HeroSection = (props: Props) => {
+  
   return (
     <div className='w-full  min-h-[65vh] md:h-[80%] flex justify-center items-start flex-wrap px-8 bg-gray-800'>
        {/* texts */}
@@ -17,7 +20,9 @@ const HeroSection = (props: Props) => {
             Democrypto is the easiest,safest and fastest way to buy and sell crypto assets
           </h1>
 
-          <CustomButton title='Get Started' onClick={()=>{}} className='my-8'/>
+        <Link href='/login'>
+        <CustomButton title='Get Started' className='my-8'/>
+        </Link>  
 
        </div>
 

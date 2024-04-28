@@ -1,22 +1,16 @@
-import { getCrypto } from '@/server/actions'
+"use client"
+
 import { Table } from 'antd'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import type { TableColumnsType } from 'antd';
 
-type Props = {}
+type Props = {
+  data:any
+}
 
-const MarketUpdateTable = (props: Props) => {
-  
-   const [currencies,setCurrencies] = useState<any[]>([])
+const MarketUpdateTable = async({data}: Props) => {
 
-
-   useEffect(()=>{
-     (async()=>{
-     let {data} =  await getCrypto(8)
-     data && setCurrencies(data)
-     })()
-   },[])
 
    const graphImages = [
     'https://s3.coinmarketcap.com/generated/sparklines/web/7d/2781/52.svg',
@@ -111,7 +105,7 @@ const MarketUpdateTable = (props: Props) => {
 
   return (
     <Table
-       dataSource={currencies}
+       dataSource={data}
        columns={columns}
        className='bg-gray-900 w-full'
        style={{background:"black"}}
