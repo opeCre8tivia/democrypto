@@ -61,7 +61,7 @@ const Page = (props: Props) => {
         }
 
 
-        let res = await axios.post("/api/moralis/auth/requestChallengeEvm", userData ,{
+        let res = await axios.post("https://democrypto.vercel.app/api/moralis/auth/requestChallengeEvm", userData ,{
           headers:{
             'content-type':'application/json'
           }

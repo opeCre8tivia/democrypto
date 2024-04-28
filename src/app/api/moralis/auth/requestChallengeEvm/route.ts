@@ -2,18 +2,7 @@
 
 import { NextResponse } from "next/server"
 import Moralis from 'moralis'
-import MoralisConfig from '@/app/api/m/moralis/[...moralis]'
- 
 
-
-let config = {
-    apiKey:process.env.MORALIS_API_KEY as string,
-    authentication: {
-       domain:'http://localhost:3000/login',
-       uri: process.env.NEXTAUTH_URL as string,
-       timeout: 120,
-     },
-}
  
 export async function POST(
     req: Request
@@ -30,7 +19,7 @@ export async function POST(
          address,
          chain:chainId,
          statement:"web3 auth",
-         domain:'goldpointofsale.com',
+         domain:'democrypto.vercel.app',
          uri: process.env.NEXTAUTH_URL as string,
          timeout: 120
         })

@@ -63,7 +63,7 @@ export const getCrypto = async(limit:number)=>{
 export const handleLogin = async(userData:any)=>{
   try {
 
-    const {data} = await axios.post("http://localhost:3000/api/auth", userData ,{
+    const {data} = await axios.post("https://democrypto.vercel.app/api/auth", userData ,{
       headers:{
         'content-type':'application/json'
       }
