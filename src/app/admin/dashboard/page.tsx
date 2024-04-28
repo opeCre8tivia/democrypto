@@ -27,7 +27,7 @@ useEffect(()=>{
     //decode token
     const decoded:any = jwtDecode(_token);
     console.log(decoded,'---------------> decodedddddd')
-    decoded && setAddress(decoded.address)
+    decoded.data && setAddress(decoded.data.address)
   }
 },[address])
 
