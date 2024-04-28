@@ -3,9 +3,9 @@
 import { Col, Row } from "antd"
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useEvmNativeBalance } from '@moralisweb3/next';
 import { jwtDecode } from "jwt-decode";
 import {useDisconnect,useAccount} from 'wagmi'
+import BalanceCard from "@/components/BalanceCard/BalanceCard";
 
 
 
@@ -17,7 +17,6 @@ const Page = (props: Props) => {
 
   const [address,setAddress] = useState<string | null> (null)
   const [balance,setBalance] = useState<any | null> (null)
-
   const { disconnectAsync } = useDisconnect();
 
 
@@ -34,60 +33,27 @@ useEffect(()=>{
 
 //get balance when address is set
 
-useEffect(()=>{
-  if(address){
-    const { data: nativeBalance } = useEvmNativeBalance({ address });
-    nativeBalance && setBalance(nativeBalance)
-  }
-},[address])
+
 
   return <div style={{width:"100%", minHeight:"100vh"}}>
            <Row gutter={16}>
-            <Col className="gutter-row" span={6}>
-              <div style={{width:"100%",height:150,background:"white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                 <div style={{color:"gray",fontSize:14,textAlign:"center",fontWeight:"bold"}}>
-                    Businesses
+            <Col className="gutter-row" span={18}>
+              <div className="w-full h-[150px] bg-gray-800 rounded-md flex flex-col justify-center items-center">
+                 <div className='text-gray-500 text-[18px] text-center font-bold'>
+                    Demo DEX
                  </div>
-                 <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   20
-                 </div>
-              </div>
-            </Col>
-            <Col className="gutter-row" span={6}>
-            <div style={{width:"100%",height:150,background:"white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                 <div style={{color:"gray",fontSize:14,textAlign:"center",fontWeight:"bold"}}>
-                    Items
-                 </div>
-                 <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   80
+                 <div className='text-gray-300 text-[26px] text-center font-bold'>
+                   0.0.0.0.0.0
                  </div>
               </div>
             </Col>
+         
+           
             <Col className="gutter-row" span={6}>
-            <div style={{width:"100%",height:150,background:"white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                 <div style={{color:"gray",fontSize:14,textAlign:"center",fontWeight:"bold"}}>
-                    Sales
-                 </div>
-                 <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   105
-                 </div>
-              </div>
-            </Col>
-            <Col className="gutter-row" span={6}>
-            <div style={{width:"100%",height:150,background:"white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                 <div style={{color:"gray",fontSize:14,textAlign:"center",fontWeight:"bold"}}>
-                    UoMs
-                 </div>
-                 <div style={{color:"black",fontSize:26,fontWeight:"bold",textAlign:"center"}}>
-                   5
-                 </div>
-              </div>
+              <BalanceCard address={address} />
             </Col>
            </Row>
 
-           <div className="text-lg text-white font-bold">
-           <h3>{`Native Balance:  ${balance? balance.balance.ether:0.0} ETH`}</h3>
-           </div>
   </div>
 }
 
