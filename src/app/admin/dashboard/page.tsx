@@ -1,14 +1,45 @@
-import prisma from "@/lib/prisma"
+"use client"
+
 import { Col, Row } from "antd"
-import React from "react"
-import { revalidatePath } from "next/cache"
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useEvmNativeBalance } from '@moralisweb3/next';
+import { jwtDecode } from "jwt-decode";
+import {useDisconnect,useAccount} from 'wagmi'
+
+
 
 type Props = {}
 
-const Page = async(props: Props) => {
+const Page = (props: Props) => {
+
+  const {push} = useRouter()
+
+  const [address,setAddress] = useState<string | null> (null)
+  const [balance,setBalance] = useState<any | null> (null)
+
+  const { disconnectAsync } = useDisconnect();
 
 
-  revalidatePath("/admin/dashboard")
+useEffect(()=>{
+  let _token = localStorage.getItem("_tkn")
+  
+  if(_token && address === null){
+    //decode token
+    const decoded:any = jwtDecode(_token);
+    console.log(decoded,'---------------> decodedddddd')
+    decoded && setAddress(decoded.address)
+  }
+},[address])
+
+//get balance when address is set
+
+useEffect(()=>{
+  if(address){
+    const { data: nativeBalance } = useEvmNativeBalance({ address });
+    nativeBalance && setBalance(nativeBalance)
+  }
+},[address])
 
   return <div style={{width:"100%", minHeight:"100vh"}}>
            <Row gutter={16}>
@@ -53,6 +84,10 @@ const Page = async(props: Props) => {
               </div>
             </Col>
            </Row>
+
+           <div className="text-lg text-white font-bold">
+           <h3>{`Native Balance:  ${balance? balance.balance.ether:0.0} ETH`}</h3>
+           </div>
   </div>
 }
 

@@ -5,6 +5,7 @@ import { _getAdminByToken } from "@/redux/actions/auth.actions"
 import { useAppDispatch } from "@/redux/hooks"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import {useDisconnect,useAccount} from 'wagmi'
 
 export default function SuperLayout({
   children,
@@ -12,18 +13,35 @@ export default function SuperLayout({
   children: React.ReactNode
 }) {
   const dispatch = useAppDispatch()
-  const router = useRouter()
+  const {push} = useRouter()
+  const { disconnectAsync } = useDisconnect();
+  const { isConnected } = useAccount();
 
   //fetch the user before displaying children
   useEffect(() => {
-    let token = localStorage.getItem("_admin")
+    let token = localStorage.getItem("_tkn")
     if (token) {
-      dispatch(_getAdminByToken({ token: token }))
+      
     } else {
       //redirect back to login
-      // router.push("/")
+      push("/login")
     }
   }, [])
+
+  //watch diconnection
+  useEffect(()=>{
+    if(!isConnected){
+      async()=>{
+       await disconnectAsync({},{
+         onSuccess:()=>{
+           console.log('---------successfully disconnected')
+          push("/login")
+   
+         }
+        })
+       }
+    }
+  },[disconnectAsync,isConnected])
 
   return <AdminLayout>{children}</AdminLayout>
 }

@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import axios from "axios"
 
 import { revalidatePath } from "next/cache"
 
@@ -56,6 +57,28 @@ export const getCrypto = async(limit:number)=>{
    } catch (error) {
      console.log(error)
    }
+
+}
+
+export const handleLogin = async(userData:any)=>{
+  try {
+
+    const {data} = await axios.post("http://localhost:3000/api/auth", userData ,{
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+
+   return data
+   
+  } catch (error) {
+    console.log(error)
+    return {
+      isError:true,
+      msg:"login success",
+      url:"/login"
+    }
+  }
 
 }
 

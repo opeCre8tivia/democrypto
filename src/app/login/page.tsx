@@ -1,7 +1,7 @@
 "use client"
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,8 @@ import {injected} from 'wagmi/connectors'
 import Image from 'next/image'
 import { useAuthRequestChallengeEvm } from "@moralisweb3/next";
 import axios from 'axios';
-import { error } from 'console';
+import { handleLogin } from '@/server/actions';
+
 
 type Props = {}
 
@@ -26,6 +27,18 @@ const Page = (props: Props) => {
 
 
   const [loading,setLoading] = useState<boolean>(false)
+  const [token,setToken] = useState<string | null>(null)
+
+
+
+  useEffect(()=>{
+
+    if(token){
+       localStorage.setItem("_tkn",token)
+       push('/admin/dashboard')
+    }
+
+  },[token])
 
   const handleAuth = async()=>{
     try {
@@ -47,8 +60,6 @@ const Page = (props: Props) => {
           network:'evm'
         }
 
-        console.log(userData,'---------> user data')
-
 
         let res = await axios.post("/api/moralis/auth/requestChallengeEvm", userData ,{
           headers:{
@@ -56,33 +67,32 @@ const Page = (props: Props) => {
           }
         })
 
-        let {message} = res.data
+        let {message,profileId} = res.data
 
 
-
-        // const { message,profileId }:any = await requestChallengeAsync({
-        //   address:accounts[0],
-        //   chainId: chainId,
-        // });
-
-        console.log(message,'-----------> message cdx59')
+       
 
         const signature = await signMessageAsync({ message });
 
-        console.log(signature,'------> signature');
-      
-        
+     
         setLoading(false)
-        const response = await signIn("moralis-auth", {
-          message,
-          signature,
-          redirect: false,
-          callbackUrl: "/dashboard",
-        });
-       
-        console.log(response,'rrrrrrrrrrr---------------->')
-        console.log(response?.url,'uuuuuuuuuuuuurrrrrrrrllllll---------------->')
-        response && response.url && push(response.url);
+
+        //Sign the client in
+
+        if(signature){
+         
+          let loginRes = await handleLogin({
+            address:userData.address,
+            profileId,
+            signature
+          })
+
+
+          if(loginRes.isError === false){
+              setToken(loginRes.payload)
+          }
+  
+        }
        
 
     } catch (error) {
