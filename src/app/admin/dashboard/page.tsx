@@ -13,11 +13,9 @@ type Props = {}
 
 const Page = (props: Props) => {
 
-  const {push} = useRouter()
 
-  const [address,setAddress] = useState<string | null> (null)
-  const [balance,setBalance] = useState<any | null> (null)
-  const { disconnectAsync } = useDisconnect();
+const [address,setAddress] = useState<string | null> (null)
+const { disconnectAsync } = useDisconnect();
 
 
 useEffect(()=>{
@@ -26,7 +24,6 @@ useEffect(()=>{
   if(_token && address === null){
     //decode token
     const decoded:any = jwtDecode(_token);
-    console.log(decoded,'---------------> decodedddddd')
     decoded.data && setAddress(decoded.data.address)
   }
 },[address])
