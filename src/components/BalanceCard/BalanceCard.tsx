@@ -3,12 +3,12 @@ import React from 'react'
 import { useEvmNativeBalance } from '@moralisweb3/next';
 
 type Props = {
-    address:string | null
+    address:string
 }
 
 const BalanceCard = ({address}: Props) => {
 
- const res = address && useEvmNativeBalance({ address })
+ const {data:nativeBalance} = useEvmNativeBalance({ address })
     
   return (
     <div  className="w-full h-[150px] bg-gray-800 rounded-md flex flex-col justify-center items-center">
@@ -16,7 +16,7 @@ const BalanceCard = ({address}: Props) => {
                     Balance
                  </div>
                  <div className='text-gray-300 text-[26px] text-center font-bold'>
-                 <h3>{`${res && res.data ? res.data.balance.ether:0.0} ETH`}</h3>
+                 <h3>{`${nativeBalance ? nativeBalance.balance.ether:0.0} ETH`}</h3>
                  </div>
               </div>
   )

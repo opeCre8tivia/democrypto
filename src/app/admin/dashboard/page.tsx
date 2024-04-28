@@ -50,7 +50,7 @@ useEffect(()=>{
          
            
             <Col className="gutter-row" span={6}>
-              <BalanceCard address={address} />
+             {address && <BalanceCard address={address} />}
             </Col>
            </Row>
 
