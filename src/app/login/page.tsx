@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { useAuthRequestChallengeEvm } from "@moralisweb3/next";
 import axios from 'axios';
 import { handleLogin } from '@/server/actions';
+import { API_URL } from '@/constants';
 
 
 type Props = {}
@@ -61,7 +62,7 @@ const Page = (props: Props) => {
         }
 
 
-        let res = await axios.post("https://democrypto.vercel.app/api/moralis/auth/requestChallengeEvm", userData ,{
+        let res = await axios.post(`${API_URL}/moralis/auth/requestChallengeEvm`, userData ,{
           headers:{
             'content-type':'application/json'
           }

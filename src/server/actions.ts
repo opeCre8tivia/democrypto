@@ -1,5 +1,6 @@
 "use server"
 
+import { API_URL } from "@/constants"
 import prisma from "@/lib/prisma"
 import axios from "axios"
 
@@ -63,7 +64,7 @@ export const getCrypto = async(limit:number)=>{
 export const handleLogin = async(userData:any)=>{
   try {
 
-    const {data} = await axios.post("https://democrypto.vercel.app/api/auth", userData ,{
+    const {data} = await axios.post(`${API_URL}/auth`, userData ,{
       headers:{
         'content-type':'application/json'
       }
